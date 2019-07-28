@@ -1,4 +1,4 @@
-
+const webpack = require('webpack');
 
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 
@@ -47,5 +47,9 @@ module.exports = {
         "react": "React",
         "react-dom": "ReactDOM"
     },
-    plugins: [new HtmlWebPackPlugin({template: "./src/index.html", filename: "./index.html"})],
+    plugins: [    new webpack.DefinePlugin({
+        'process.env.NODE_ENV': JSON.stringify('development'), // Tells React to build in either dev or prod modes. https://facebook.github.io/react/downloads.html (See bottom)
+        __DEV__: true
+      }),
+        new HtmlWebPackPlugin({template: "./src/index.html", filename: "./index.html"})],
 };

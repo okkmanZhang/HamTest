@@ -1,10 +1,19 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import * as React from 'react'
+import * as ReactDOM from 'react-dom'
+import { Provider } from "react-redux";
+
 import "./styles/styles.scss"; 
 
-import Hello  from "./ts/components/Hello";
+import App  from "./containers/App";
+import store from "./store/store";
+
+const MyApp = () => (
+    <Provider store={store}>
+         <App  />
+    </Provider>
+)
 
 ReactDOM.render(
-    <Hello  />,
+    <MyApp  />,
     document.getElementById("example")
 );
