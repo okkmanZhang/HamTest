@@ -7,7 +7,7 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import {connect} from 'react-redux';
-import {IStoreState, incrementSuccess} from '../store/store';
+import {IStoreState, incrementSuccess, decrementSuccess} from '../store/store';
 import {bindActionCreators} from "redux";
 import { withStyles } from '@material-ui/styles';
 import { purple, green } from '@material-ui/core/colors';
@@ -39,6 +39,7 @@ const theme = createMuiTheme({
 
 interface IAppAction {
   incrementSuccess: any;
+  decrementSuccess: any;
 }
 
 interface IProps {
@@ -80,8 +81,15 @@ class App extends React.Component <IProps, IState> {
         </AppBar>
         <div>
           <Button variant="contained" className={classes.button} onClick={this.addClick} >
-            Default
+            +
           </Button>
+          <Button variant="contained" className={classes.button} onClick={this.minusClick} >
+            -
+          </Button>
+          <label>
+            count: {this.props.count}
+          </label>
+
         </div>
       </div>
       </MuiThemeProvider>
@@ -91,13 +99,17 @@ class App extends React.Component <IProps, IState> {
   addClick = () => {
     this.props.actions.incrementSuccess();
   }
+  minusClick = () => {
+    this.props.actions.decrementSuccess();
+  }
 }
 
 const mapStateToProps = (state : IStoreState) => ({count: state.count});
 
 const mapDispatchToProps = (dispatch : any) => ({
   actions: bindActionCreators({
-    incrementSuccess
+    incrementSuccess,
+    decrementSuccess
   }, dispatch)
 });
 
