@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
+import {MuiThemeProvider} from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -9,38 +9,42 @@ import MenuIcon from '@material-ui/icons/Menu';
 import {connect} from 'react-redux';
 import {IStoreState, incrementSuccess, decrementSuccess} from '../store/store';
 import {bindActionCreators} from "redux";
-import {withStyles} from '@material-ui/styles';
+import {withStyles} from '@material-ui/core/styles';
 import {purple, green, blue} from '@material-ui/core/colors';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import { createMuiTheme } from '@material-ui/core';
+
+const theme = createMuiTheme({
+  spacing: 2,
+  palette: {
+    primary: blue,
+    secondary: green
+  },
+});
 
 const useStyles = (theme : any) => ({
   root: {
     flexGrow: 1
   },
   menuButton: {
-    marginRight: "2px"
+    marginRight: theme.spacing(2)
   },
   title: {
     flexGrow: 1,
-  },
-  button: {
-    margin: "1px"
   },
   input: {
     display: 'none'
   },
   menu: {
-    marginRight: "2px",    
-  }
+    marginRight: theme.spacing(1),    
+  },
+  button: {
+    margin: theme.spacing(1),
+  },
 });
 
-const theme = createMuiTheme({
-  palette: {
-    primary: blue,
-    secondary: green
-  }
-});
+
 
 interface IAppAction {
   incrementSuccess : any;
@@ -111,11 +115,10 @@ IState > {
             </Toolbar>
           </AppBar>
           <div style={{marginLeft: "20px", marginRight: "20px", marginTop: "20px", marginBottom: "10px"}}>
-            <Button variant="contained" className={classes.button} onClick={this.addClick}>
+            <Button className={classes.button} onClick={this.addClick}>
               +
             </Button>
-            <Button
-              variant="contained"
+            <Button              
               className={classes.button}
               onClick={this.minusClick}>
               -
