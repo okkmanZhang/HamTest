@@ -143,8 +143,9 @@ IState > {
             <Paper>
               <h3>Persons</h3>
               <List component="nav" aria-label="secondary mailbox folders">
-                {this.state.persons && (this.state.persons || []).map((p : any, index : number) => <ListItem key={`person${index}`} button>
-                  <ListItemText primary={p.name} />
+                {this.state.persons && (this.state.persons || [])
+                  .map((p : any, index : number) => <ListItem key={`person${index}`} button>
+                  <ListItemText primary={`${p.personId}:${p.name}`} />
                 </ListItem>)
 }
               </List>
