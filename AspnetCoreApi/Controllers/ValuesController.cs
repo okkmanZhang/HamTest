@@ -21,16 +21,34 @@ namespace AspnetCoreApi.Controllers
         [HttpGet]
         public ActionResult<IList<Person>> Get()
         {
-           
-            
             return  _SqlDBContext.Persons.Include(p => p.Grade).ToList();
         }
 
         // GET api/values/5
-        [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
+        [HttpGet("Save/{id}")]
+        public ActionResult<string> Save(int id)
         {
-            return "value";
+
+            _SqlDBContext.Persons.Add(new Person{
+                Name = "55" + DateTime.Now.Millisecond,
+            });
+
+            _SqlDBContext.SaveChanges();
+
+            return "person";
+        }
+
+        [HttpGet("SaveGrade/{id}")]
+        public ActionResult<string> SaveGrade(int id)
+        {
+
+            _SqlDBContext.Grades.Add(new Grade{
+                Name = "grade" + DateTime.Now.Millisecond,
+            });
+
+            _SqlDBContext.SaveChanges();
+
+            return "grade";
         }
 
         // POST api/values

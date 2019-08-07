@@ -1,4 +1,5 @@
 import * as React from 'react';
+import axios from 'axios';
 import {MuiThemeProvider} from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -13,14 +14,14 @@ import {withStyles} from '@material-ui/core/styles';
 import {purple, green, blue} from '@material-ui/core/colors';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import { createMuiTheme } from '@material-ui/core';
+import {createMuiTheme, Paper, List, ListItem, ListItemText} from '@material-ui/core';
 
 const theme = createMuiTheme({
   spacing: 2,
   palette: {
     primary: blue,
     secondary: green
-  },
+  }
 });
 
 const useStyles = (theme : any) => ({
@@ -31,20 +32,18 @@ const useStyles = (theme : any) => ({
     marginRight: theme.spacing(2)
   },
   title: {
-    flexGrow: 1,
+    flexGrow: 1
   },
   input: {
     display: 'none'
   },
   menu: {
-    marginRight: theme.spacing(1),    
+    marginRight: theme.spacing(1)
   },
   button: {
-    margin: theme.spacing(1),
-  },
+    margin: theme.spacing(1)
+  }
 });
-
-
 
 interface IAppAction {
   incrementSuccess : any;
@@ -60,6 +59,7 @@ interface IProps {
 interface IState {
   test?: number;
   anchorEl?: any;
+  persons?: any;
 }
 
 class App extends React.Component < IProps,
@@ -67,7 +67,17 @@ IState > {
 
   constructor(props : IProps) {
     super(props);
+
+    this.state = {
+      test: null,
+      anchorEl: null,
+      persons: null
+    }
   };
+
+  componentDidMount() {
+    this.getPersons();
+  }
 
   render() {
     const {classes} = this.props;
@@ -87,7 +97,7 @@ IState > {
               <Typography variant="h6" className={classes.title}>
                 News
               </Typography>
-              
+
               <Button color="inherit" onClick={this.handleClick} className={classes.menu}>
                 Patient
               </Button>
@@ -110,27 +120,54 @@ IState > {
                 onClose={this.handleClose}>
                 <MenuItem onClick={this.handleClose}>Profile</MenuItem>
               </Menu>
-         
+
               <Button color="inherit">Login</Button>
             </Toolbar>
           </AppBar>
-          <div style={{marginLeft: "20px", marginRight: "20px", marginTop: "20px", marginBottom: "10px"}}>
+          <div
+            style={{
+            marginLeft: "20px",
+            marginRight: "20px",
+            marginTop: "20px",
+            marginBottom: "10px"
+          }}>
             <Button className={classes.button} onClick={this.addClick}>
               +
             </Button>
-            <Button              
-              className={classes.button}
-              onClick={this.minusClick}>
+            <Button className={classes.button} onClick={this.minusClick}>
               -
             </Button>
             <label>
               count of bread: {this.props.count}
             </label>
-
+            <Paper>
+              <h3>Persons</h3>
+              <List component="nav" aria-label="secondary mailbox folders">
+                {this.state.persons && (this.state.persons || []).map((p : any, index : number) => <ListItem key={`person${index}`} button>
+                  <ListItemText primary={p.name} />
+                </ListItem>)
+}
+              </List>
+            </Paper>
           </div>
         </div>
       </MuiThemeProvider>
     );
+  }
+
+  getPersons = () => {
+    axios.get(`https://localhost:5001/api/values`, {
+      // headers: {
+      //   'Access-Control-Allow-Origin': '*'
+      // }
+    },).then(res => {
+
+      console.warn(res);
+
+      const persons = res.data;
+
+      this.setState({persons});
+    })
   }
 
   handleClick = (event : any) => {
