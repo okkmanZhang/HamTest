@@ -14,7 +14,21 @@ import {withStyles} from '@material-ui/core/styles';
 import {purple, green, blue} from '@material-ui/core/colors';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import {createMuiTheme, Paper, List, ListItem, ListItemText} from '@material-ui/core';
+import {
+  createMuiTheme,
+  Paper,
+  List,
+  ListItem,
+  ListItemText,
+  Grid,
+  TextField
+} from '@material-ui/core';
+import FormControl from '@material-ui/core/FormControl';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
+import { runInThisContext } from 'vm';
 
 const theme = createMuiTheme({
   spacing: 2,
@@ -24,7 +38,7 @@ const theme = createMuiTheme({
   }
 });
 
-const useStyles = (theme : any) => ({
+const useStyles = {
   root: {
     flexGrow: 1
   },
@@ -42,8 +56,11 @@ const useStyles = (theme : any) => ({
   },
   button: {
     margin: theme.spacing(1)
+  },
+  paper: {
+    padding: theme.spacing(10)
   }
-});
+};
 
 interface IAppAction {
   incrementSuccess : any;
@@ -56,10 +73,18 @@ interface IProps {
   classes?: any;
 }
 
+interface personError {
+  name?: string;
+}
+
 interface IState {
   test?: number;
   anchorEl?: any;
   persons?: any;
+  name?: string;
+  personId?: number;
+  isEditing?: boolean;
+  error?: personError;
 }
 
 class App extends React.Component < IProps,
@@ -71,7 +96,10 @@ IState > {
     this.state = {
       test: null,
       anchorEl: null,
-      persons: null
+      persons: null,
+      name: null,
+      isEditing: false,
+      error: null
     }
   };
 
@@ -140,27 +168,141 @@ IState > {
             <label>
               count of bread: {this.props.count}
             </label>
-            <Paper>
-              <h3>Persons</h3>
-              <List component="nav" aria-label="secondary mailbox folders">
-                {this.state.persons && (this.state.persons || [])
-                  .map((p : any, index : number) => <ListItem key={`person${index}`} button>
-                  <ListItemText primary={`${p.personId}:${p.name}`} />
-                </ListItem>)
+
+            <Grid container className={classes.root} justify="center" spacing={6}>
+              <Grid item xs={6}>
+                <Paper>
+                  <div className={classes.paper}>
+
+                    <div>Persons</div>
+                    <List component="nav">
+                      {this.state.persons && (this.state.persons || []).map((p : any, index : number) => <ListItem key={`person${index}`} button>
+                        <ListItemText primary={`${p.personId}:${p.name}`}/>
+                        <Button disabled={!!this.state.isEditing} onClick={() => this.itemRemove(p)}>
+                          Remove
+                        </Button>
+                        <Button disabled={!!this.state.isEditing} onClick={() => this.itemEdit(p)}>
+                          Edit
+                        </Button>
+                      </ListItem>)
 }
-              </List>
-            </Paper>
+                    </List>
+                  </div>
+                </Paper>
+              </Grid>
+              <Grid item xs={6}>
+                <Paper>
+                  <div className={classes.paper}>
+                    <div>
+                      {/* <TextField
+                        placeholder="Name"
+                        margin="normal"
+                        value={this.state.name}
+                        //errorText={this.state.error && this.state.error.name}
+                        onChange={(d) => {
+                        this.setState({name: d.currentTarget.value})
+                      }}/> */}
+
+                      <FormControl  margin="normal" className={classes.formControl} error={!!this.state.error && !!this.state.error.name}>
+                        <Input
+                          placeholder="name"
+                          id="component-error"
+                          value={this.state.name}
+                          onChange={(d) => {
+                            this.setState({name: d.currentTarget.value})
+                          }}
+                          aria-describedby="component-error-text"/>
+                       {this.state.error && this.state.error.name &&  <FormHelperText id="component-error-text">{this.state.error && this.state.error.name}</FormHelperText>}
+                      </FormControl>
+
+                    </div>
+                    <div>
+                      <Button variant="contained" color="primary" onClick={this.addPerson}>
+                        {!this.state.isEditing
+                          ? "ADD"
+                          : "EDIT"}
+                      </Button>
+                      <Button onClick={this.Cancel}>
+                        CANCEL
+                      </Button>
+                    </div>
+                  </div>
+                </Paper>
+              </Grid>
+            </Grid>
           </div>
         </div>
       </MuiThemeProvider>
     );
   }
 
+  Cancel = () => {
+    this.setState({isEditing: false, personId: null, name: "", error: null});
+  }
+
+  itemRemove = (e : any) => {
+    axios
+      .post(`https://localhost:5001/api/Values/RemovePerson`, {personId: e.personId})
+      .then(res => {
+        this.getPersons();
+      })
+  }
+
+  itemEdit = (e : any) => {
+    this.setState({isEditing: true, personId: e.personId, name: e.name})
+  }
+
+  itemDoEdit = () => {
+    axios
+      .post(`https://localhost:5001/api/Values/EditPerson`, {
+      personId: this.state.personId,
+      name: this.state.name
+    })
+      .then(res => {
+        this.getPersons();
+      })
+  }
+
+  validate = () => {
+
+    if (!!this.state.name) {
+      this.setState({error: null})
+    } else {
+
+      this.setState({
+        error: {
+          name: "Name is required."
+        }
+      })
+    }
+
+    return !!this.state.name ? true : false;
+
+  }
+
+  addPerson = () => {
+
+    if (!this.validate()){
+      return;
+    }
+
+    if (!this.state.isEditing) {
+
+      axios
+        .post(`https://localhost:5001/api/Values/SavePerson`, {name: this.state.name})
+        .then(res => {
+          this.getPersons();
+        })
+    } else {
+      this.itemDoEdit();
+    }
+
+    this.Cancel();
+  }
+
   getPersons = () => {
     axios.get(`https://localhost:5001/api/values`, {
-      // headers: {
-      //   'Access-Control-Allow-Origin': '*'
-      // }
+      // headers: {   'Access-Control-Allow-Origin': '*' }
     },).then(res => {
 
       console.warn(res);

@@ -21,7 +21,7 @@ namespace AspnetCoreApi.Controllers
         [HttpGet]
         public ActionResult<IList<Person>> Get()
         {
-            return  _SqlDBContext.Persons.Include(p => p.Grade).ToList();
+            return  _SqlDBContext.Persons.ToList();
         }
 
         // GET api/values/5
@@ -38,17 +38,33 @@ namespace AspnetCoreApi.Controllers
             return "person";
         }
 
-        [HttpGet("SaveGrade/{id}")]
-        public ActionResult<string> SaveGrade(int id)
+        [HttpPost("SavePerson")]
+        public ActionResult<string> SavePerson([FromBody]PersonViewModel person)
         {
-
-            _SqlDBContext.Grades.Add(new Grade{
-                Name = "grade" + DateTime.Now.Millisecond,
+            _SqlDBContext.Persons.Add(new Person{
+                Name = person.Name,
             });
-
             _SqlDBContext.SaveChanges();
+            return "OK";
+        }
 
-            return "grade";
+        [HttpPost("EditPerson")]
+        public ActionResult<string> EditPerson([FromBody]PersonViewModel person)
+        {
+            var personDB = _SqlDBContext.Persons.FirstOrDefault(f => f.PersonId == person.PersonId);
+            personDB.Name = person.Name;
+            _SqlDBContext.SaveChanges();
+            return "OK";
+        }
+
+        [HttpPost("RemovePerson")]
+        public ActionResult<string> RemovePerson([FromBody]PersonViewModel person)
+        {
+            _SqlDBContext.Persons.Remove(new Person{
+                PersonId = person.PersonId
+            });
+            _SqlDBContext.SaveChanges();
+            return "OK";
         }
 
         // POST api/values
