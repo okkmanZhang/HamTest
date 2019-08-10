@@ -194,15 +194,9 @@ IState > {
                 <Paper>
                   <div className={classes.paper}>
                     <div>
-                      {/* <TextField
-                        placeholder="Name"
-                        margin="normal"
-                        value={this.state.name}
-                        //errorText={this.state.error && this.state.error.name}
-                        onChange={(d) => {
-                        this.setState({name: d.currentTarget.value})
-                      }}/> */}
-
+                      <div>
+                        Create Person
+                      </div>
                       <FormControl  margin="normal" className={classes.formControl} error={!!this.state.error && !!this.state.error.name}>
                         <Input
                           placeholder="name"
@@ -229,6 +223,32 @@ IState > {
                   </div>
                 </Paper>
               </Grid>
+              <Grid item xs={6}>
+                <Paper>
+                  <div className={classes.paper}>
+                    <div>
+                      <div>
+                        Person Addresses
+                      </div>
+                    </div>
+                    <div>
+                    </div>
+                  </div>
+                </Paper>
+              </Grid>        
+              <Grid item xs={6}>
+                <Paper>
+                  <div className={classes.paper}>
+                    <div>
+                      <div>
+                      Aliases
+                      </div>
+                    </div>
+                    <div>
+                    </div>
+                  </div>
+                </Paper>
+              </Grid>                     
             </Grid>
           </div>
         </div>
