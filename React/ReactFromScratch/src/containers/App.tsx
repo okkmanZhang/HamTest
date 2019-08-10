@@ -21,14 +21,15 @@ import {
   ListItem,
   ListItemText,
   Grid,
-  TextField
+  TextField,
 } from '@material-ui/core';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
-import { runInThisContext } from 'vm';
+import { PositionProperty } from 'csstype';
+
 
 const theme = createMuiTheme({
   spacing: 2,
@@ -59,6 +60,14 @@ const useStyles = {
   },
   paper: {
     padding: theme.spacing(10)
+  },
+  footer: {
+    position: "fixed" as PositionProperty, 
+    background: "lightgrey",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: '50px'
   }
 };
 
@@ -197,16 +206,18 @@ IState > {
                       <div>
                         Create Person
                       </div>
-                      <FormControl  margin="normal" className={classes.formControl} error={!!this.state.error && !!this.state.error.name}>
+                      <FormControl
+                        margin="normal"
+                        className={classes.formControl}
+                        error={!!this.state.error && !!this.state.error.name}>
                         <Input
                           placeholder="name"
                           id="component-error"
                           value={this.state.name}
                           onChange={(d) => {
-                            this.setState({name: d.currentTarget.value})
-                          }}
-                          aria-describedby="component-error-text"/>
-                       {this.state.error && this.state.error.name &&  <FormHelperText id="component-error-text">{this.state.error && this.state.error.name}</FormHelperText>}
+                          this.setState({name: d.currentTarget.value})
+                        }}
+                          aria-describedby="component-error-text"/> {this.state.error && this.state.error.name && <FormHelperText id="component-error-text">{this.state.error && this.state.error.name}</FormHelperText>}
                       </FormControl>
 
                     </div>
@@ -231,26 +242,38 @@ IState > {
                         Person Addresses
                       </div>
                     </div>
-                    <div>
-                    </div>
+                    <div></div>
                   </div>
                 </Paper>
-              </Grid>        
+              </Grid>
               <Grid item xs={6}>
                 <Paper>
                   <div className={classes.paper}>
                     <div>
                       <div>
-                      Aliases
+                        Aliases
+
                       </div>
                     </div>
-                    <div>
-                    </div>
+                    <div></div>
                   </div>
                 </Paper>
-              </Grid>                     
+              </Grid>
             </Grid>
           </div>
+          <div className={classes.footer}>
+          <pre>
+                      .List component
+                      .break app into components
+                      .router
+                      .jtest
+                      .build
+                      .deploy with server
+                      .create new material ui theme
+                      .auth2
+                      .sticky
+                      </pre>
+            </div>
         </div>
       </MuiThemeProvider>
     );
@@ -296,13 +319,15 @@ IState > {
       })
     }
 
-    return !!this.state.name ? true : false;
+    return !!this.state.name
+      ? true
+      : false;
 
   }
 
   addPerson = () => {
 
-    if (!this.validate()){
+    if (!this.validate()) {
       return;
     }
 
