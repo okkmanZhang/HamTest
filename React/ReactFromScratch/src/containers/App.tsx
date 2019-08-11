@@ -21,15 +21,14 @@ import {
   ListItem,
   ListItemText,
   Grid,
-  TextField,
+  TextField
 } from '@material-ui/core';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
-import { PositionProperty } from 'csstype';
-
+import {PositionProperty} from 'csstype';
 
 const theme = createMuiTheme({
   spacing: 2,
@@ -62,7 +61,7 @@ const useStyles = {
     padding: theme.spacing(10)
   },
   footer: {
-    position: "fixed" as PositionProperty, 
+    position: "fixed" as PositionProperty,
     background: "lightgrey",
     bottom: 0,
     left: 0,
@@ -262,18 +261,29 @@ IState > {
             </Grid>
           </div>
           <div className={classes.footer}>
-          <pre>
-                      .List component
-                      .break app into components
-                      .router
-                      .jtest
-                      .build
-                      .deploy with server
-                      .create new material ui theme
-                      .auth2
-                      .sticky
-                      </pre>
-            </div>
+            <pre>
+              .List component
+              .person, service
+              .break app into components
+              .router
+              .jtest
+              .build
+              .deploy with server
+              .create new material ui theme
+              .auth2
+              .sticky
+              .databank blocks
+              .Generic components
+              .block design
+              .create blocks
+              .connect Generic blocks with server
+              .connect Generic blocks, server and DB
+              .framework for creating SPA by domain experts
+              .Non-functional requirements framework
+              .Scalability, Testablility, Maintainability, Performance, Security, Availablility
+              .domain model/framework              
+            </pre>
+          </div>
         </div>
       </MuiThemeProvider>
     );
