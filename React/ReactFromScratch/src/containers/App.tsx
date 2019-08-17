@@ -29,6 +29,7 @@ import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import {PositionProperty} from 'csstype';
+import Example from './Hook1';
 
 const theme = createMuiTheme({
   spacing: 2,
@@ -251,6 +252,7 @@ IState > {
                     <div>
                       <div>
                         Aliases
+                          <Example />
 
                       </div>
                     </div>
@@ -261,7 +263,7 @@ IState > {
             </Grid>
           </div>
           <div className={classes.footer}>
-            <pre>
+            <p style={{fontSize: 10}}>
               .List component
               .person, service
               .break app into components
@@ -282,7 +284,7 @@ IState > {
               .Non-functional requirements framework
               .Scalability, Testablility, Maintainability, Performance, Security, Availablility
               .domain model/framework              
-            </pre>
+            </p>
           </div>
         </div>
       </MuiThemeProvider>
