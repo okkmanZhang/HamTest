@@ -1,19 +1,12 @@
 import * as React from 'react';
 import axios from 'axios';
 import {MuiThemeProvider} from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
 import {connect} from 'react-redux';
 import {IStoreState, incrementSuccess, decrementSuccess} from '../store/store';
 import {bindActionCreators} from "redux";
 import {withStyles} from '@material-ui/core/styles';
 import {purple, green, blue} from '@material-ui/core/colors';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
 import {
   createMuiTheme,
   Paper,
@@ -26,10 +19,9 @@ import {
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
 import {PositionProperty} from 'csstype';
 import Example from './Hook1';
+import MainMenu from './MainMenu';
 
 const theme = createMuiTheme({
   spacing: 2,
@@ -122,45 +114,7 @@ IState > {
     return (
       <MuiThemeProvider theme={theme}>
         <div>
-          <AppBar position="static">
-            <Toolbar>
-              <IconButton
-                edge="start"
-                className={classes.menuButton}
-                color="inherit"
-                aria-label="Menu">
-                <MenuIcon/>
-              </IconButton>
-              <Typography variant="h6" className={classes.title}>
-                News
-              </Typography>
-
-              <Button color="inherit" onClick={this.handleClick} className={classes.menu}>
-                Patient
-              </Button>
-              <Menu
-                id="simple-menu"
-                anchorEl={this.state && this.state.anchorEl}
-                keepMounted
-                open={Boolean(this.state && this.state.anchorEl)}
-                onClose={this.handleClose}>
-                <MenuItem onClick={this.handleClose}>Profile</MenuItem>
-              </Menu>
-              <Button color="inherit" onClick={this.handleClick} className={classes.menu}>
-                Service
-              </Button>
-              <Menu
-                id="simple-menu"
-                anchorEl={this.state && this.state.anchorEl}
-                keepMounted
-                open={Boolean(this.state && this.state.anchorEl)}
-                onClose={this.handleClose}>
-                <MenuItem onClick={this.handleClose}>Profile</MenuItem>
-              </Menu>
-
-              <Button color="inherit">Login</Button>
-            </Toolbar>
-          </AppBar>
+          <MainMenu />
           <div
             style={{
             marginLeft: "20px",
@@ -263,11 +217,12 @@ IState > {
             </Grid>
           </div>
           <div className={classes.footer}>
-            <p style={{fontSize: 10}}>
+            <p style={{fontSize: 12}}>
               .List component
               .person, service
               .break app into components
               .router
+              .Hook
               .jtest
               .build
               .deploy with server
@@ -282,8 +237,11 @@ IState > {
               .connect Generic blocks, server and DB
               .framework for creating SPA by domain experts
               .Non-functional requirements framework
+              .RN
+              .apollo graphql
+              .Reason
               .Scalability, Testablility, Maintainability, Performance, Security, Availablility
-              .domain model/framework              
+              .domain model/framework                            
             </p>
           </div>
         </div>
@@ -368,14 +326,6 @@ IState > {
 
       this.setState({persons});
     })
-  }
-
-  handleClick = (event : any) => {
-    this.setState({anchorEl: event.currentTarget});
-  }
-
-  handleClose = () => {
-    this.setState({anchorEl: null});
   }
 
   addClick = () => {
