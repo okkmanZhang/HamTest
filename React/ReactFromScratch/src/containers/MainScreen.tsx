@@ -44,7 +44,7 @@ export default function MainScreen(t : any) {
         axios
             .post(`https://localhost:5001/api/Values/RemovePerson`, {personId: e.personId})
             .then(res => {
-                this.getPersons();
+                getPersons();
             })
     }
 
@@ -58,7 +58,7 @@ export default function MainScreen(t : any) {
         axios
             .post(`https://localhost:5001/api/Values/EditPerson`, {personId, name})
             .then(res => {
-                this.getPersons();
+                getPersons();
             })
     }
 
@@ -67,11 +67,7 @@ export default function MainScreen(t : any) {
         if (!!name) {
             setError(null);
         } else {
-            setError({
-                error: {
-                    name: "Name is required."
-                }
-            })
+            setError({ name: "Name is required."});
         }
 
         return !!name
@@ -82,7 +78,7 @@ export default function MainScreen(t : any) {
 
     const addPerson = () => {
 
-        if (!this.validate()) {
+        if (!validate()) {
             return;
         }
 
@@ -90,18 +86,18 @@ export default function MainScreen(t : any) {
             axios
                 .post(`https://localhost:5001/api/Values/SavePerson`, {name})
                 .then(res => {
-                    this.getPersons();
+                    getPersons();
                 })
         } else {
-            this.itemDoEdit();
+            itemDoEdit();
         }
-        this.Cancel();
+        Cancel();
     }
 
     const getPersons = () => {
         axios.get(`https://localhost:5001/api/values`, {},).then(res => {
             const persons = res.data;
-            this.setState({persons});
+            setPersons(persons);
         })
     }
 

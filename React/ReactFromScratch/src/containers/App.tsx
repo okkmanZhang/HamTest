@@ -22,6 +22,7 @@ import Example from './Hook1';
 import MainMenu from './MainMenu';
 import { useStyles } from '../styles/style';
 import MainScreen from './MainScreen';
+import MainBottom from './MainBottom';
 
 const theme = createMuiTheme({
   spacing: 2,
@@ -81,6 +82,7 @@ IState > {
         <div>
           <MainMenu />
           <MainScreen />
+          <MainBottom />
         </div>
       </MuiThemeProvider>
     );
