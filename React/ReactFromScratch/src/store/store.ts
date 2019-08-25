@@ -6,8 +6,7 @@ import reduxImmutableStateInvariant from "redux-immutable-state-invariant";
 
 declare const __DEV__: boolean; // from webpack
 
-const INCREMENT = "INCREMENT";
-const DECREMENT = "DECREMENT";
+
 
 export interface IStoreState {
     count: number;
@@ -40,13 +39,13 @@ function _getMiddleware(): Middleware[] {
 }
 
 
-export function incrementSuccess() {
-    return {type: INCREMENT};
-}
+// export function incrementSuccess() {
+//     return {type: INCREMENT};
+// }
 
-export function decrementSuccess() {
-    return {type: DECREMENT};
-}
+// export function decrementSuccess() {
+//     return {type: DECREMENT};
+// }
 
 export default  createStore(
     combineReducers({count: countReducer}),

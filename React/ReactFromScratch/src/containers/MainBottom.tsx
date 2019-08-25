@@ -10,7 +10,13 @@ export default function MainBottom() {
             <p style={{
                 fontSize: 12
             }}>
-                .List component .person, service .break app into components .router .Hook .jtest
+                .List component .person, service
+                .break app into components .router .Hook .jtest
+            </p>
+            <p style={{
+                fontSize: 10
+            }}>                
+                .babel
                 .build .deploy with server .create new material ui theme .auth2 .sticky
                 .databank blocks .Generic components .block design .create blocks .connect
                 Generic blocks with server .connect Generic blocks, server and DB .framework for
@@ -18,6 +24,10 @@ export default function MainBottom() {
                 .apollo graphql .Reason .Scalability, Testablility, Maintainability,
                 Performance, Security, Availablility .domain model/framework
             </p>
+            <p style={{
+                fontSize: 10
+            }}>Have done               
+            </p>            
         </div>
 
     )

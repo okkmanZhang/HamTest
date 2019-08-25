@@ -1,24 +1,22 @@
 import * as React from 'react';
 import {useStyles} from '../styles/style';
-import {withStyles} from '@material-ui/core/styles';
-import {purple, green, blue} from '@material-ui/core/colors';
 import {
-    createMuiTheme,
     Paper,
     List,
     ListItem,
     ListItemText,
     Grid,
-    TextField
 } from '@material-ui/core';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Input from '@material-ui/core/Input';
-import {PositionProperty} from 'csstype';
 import Button from '@material-ui/core/Button';
 import Example from './Hook1';
 import axios from 'axios';
 import {useState, useEffect} from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { IStoreState } from '../store/store';
+import { INCREMENT, DECREMENT } from '../store/actionTypes';
 
 export default function MainScreen(t : any) {
     const [isEditing, setIsEditing] = useState(false);
@@ -30,6 +28,9 @@ export default function MainScreen(t : any) {
     useEffect(() => {
         getPersons();
     }, []);
+
+    const count = useSelector((state : IStoreState) => state.count);
+    const dispatch = useDispatch();
 
     const classes = useStyles({});
 
@@ -101,18 +102,8 @@ export default function MainScreen(t : any) {
         })
     }
 
-    const addClick = () => {
-        // this
-        //     .props
-        //     .actions
-        //     .incrementSuccess();
-    }
-    const minusClick = () => {
-        // this
-        //     .props
-        //     .actions
-        //     .decrementSuccess();
-    }
+    const addClick = () => dispatch({type: INCREMENT});    
+    const minusClick = () => dispatch({type: DECREMENT});
 
     return (
         <div
@@ -129,9 +120,7 @@ export default function MainScreen(t : any) {
                 -
             </Button>
             <label>
-                count of bread: {
-                    //this.props.count
-                    }
+                count of bread: {count}
             </label>
 
             <Grid container className={classes.root} justify="center" spacing={6}>
