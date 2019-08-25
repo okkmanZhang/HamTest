@@ -15,8 +15,8 @@ import Example from './Hook1';
 import axios from 'axios';
 import {useState, useEffect} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { IStoreState } from '../store/store';
 import { INCREMENT, DECREMENT } from '../store/actionTypes';
+import { IPerson, IStoreState } from '../models';
 
 export default function MainScreen(t : any) {
     const [isEditing, setIsEditing] = useState(false);
@@ -25,11 +25,9 @@ export default function MainScreen(t : any) {
     const [name, setName] = useState("");
     const [persons, setPersons] = useState([]);
 
-    useEffect(() => {
-        getPersons();
-    }, []);
-
+    useEffect(() => { getPersons();}, []);
     const count = useSelector((state : IStoreState) => state.count);
+    const personsStore = useSelector((state : IStoreState) => state.persons);
     const dispatch = useDispatch();
 
     const classes = useStyles({});
@@ -59,7 +57,7 @@ export default function MainScreen(t : any) {
         axios
             .post(`https://localhost:5001/api/Values/EditPerson`, {personId, name})
             .then(res => {
-                getPersons();
+                getPersons();                
             })
     }
 
@@ -97,8 +95,9 @@ export default function MainScreen(t : any) {
 
     const getPersons = () => {
         axios.get(`https://localhost:5001/api/values`, {},).then(res => {
-            const persons = res.data;
+            const persons = res.data as IPerson[];
             setPersons(persons);
+            dispatch({type:"GET_PERSONS_SUCCESS", payload: persons})
         })
     }
 

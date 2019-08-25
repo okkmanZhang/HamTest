@@ -10,7 +10,8 @@ export default function MainBottom() {
             <p style={{
                 fontSize: 12
             }}>
-                .List component .person, service
+                .List component .person .async action .ui axios service
+                .complicated local state object
                 .break app into components .router .Hook .jtest
             </p>
             <p style={{
@@ -23,6 +24,7 @@ export default function MainBottom() {
                 creating SPA by domain experts .Non-functional requirements framework .RN
                 .apollo graphql .Reason .Scalability, Testablility, Maintainability,
                 Performance, Security, Availablility .domain model/framework
+                .HTTP c
             </p>
             <p style={{
                 fontSize: 10

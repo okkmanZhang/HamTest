@@ -3,27 +3,9 @@ import thunk from "redux-thunk";
 import promise from "redux-promise-middleware";
 import logger from "redux-logger";
 import reduxImmutableStateInvariant from "redux-immutable-state-invariant";
+import { reducer } from "./reducer";
 
 declare const __DEV__: boolean; // from webpack
-
-
-
-export interface IStoreState {
-    count: number;
-}
-
-const initialState = { count: 0} as IStoreState;
-
-function countReducer(state : number  = initialState.count , action : any) {
-    switch (action.type) {
-        case "INCREMENT":
-            return state + 1;
-        case "DECREMENT":
-            return state -1;
-        default:
-            return state;
-    }
-}
 
 function _getMiddleware(): Middleware[] { 		
 	let middleware = [
@@ -48,7 +30,7 @@ function _getMiddleware(): Middleware[] {
 // }
 
 export default  createStore(
-    combineReducers({count: countReducer}),
+    combineReducers(reducer),
     compose(
         applyMiddleware(..._getMiddleware()),
         ));
