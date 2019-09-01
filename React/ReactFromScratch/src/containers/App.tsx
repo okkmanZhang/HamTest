@@ -7,6 +7,10 @@ import MainScreen from './MainScreen';
 import MainBottom from './MainBottom';
 
 const theme = createMuiTheme({
+  typography: {
+    fontFamily: 'Roboto, sans-serif',
+    fontSize: 11,
+  },
   spacing: 2,
   palette: {
     primary: blue,

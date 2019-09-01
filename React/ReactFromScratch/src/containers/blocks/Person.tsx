@@ -9,21 +9,25 @@ import axios from 'axios';
 
 const Person = () => {
 
+    const defaultPerson = {personId: null, name: ''} as IPerson;
+
+    //local state
     const [error, setError] = useState(null);
     const [persons, setPersons] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
-    const [personId, setPersonId] = useState(null);
-    const [name, setName] = useState("");
+    const [person, setPerson] = useState(defaultPerson);
+
+    //Redux
     const personsStore = useSelector((state: IStoreState) => state.persons);
     const dispatch = useDispatch();
 
     useEffect(() => { getPersons(); }, []);
     const classes = useStyles({});
 
+
     const Cancel = () => {
         setIsEditing(false);
-        setPersonId(null);
-        setName('');
+        setPerson(defaultPerson);
         setError(null);
     }
 
@@ -37,13 +41,12 @@ const Person = () => {
 
     const itemEdit = (e: any) => {
         setIsEditing(true);
-        setPersonId(e.personId);
-        setName(e.name);
+        setPerson({personId: e.personId, name: e.name} as IPerson);
     }
 
     const itemDoEdit = () => {
         axios
-            .post(`https://localhost:5001/api/Values/EditPerson`, { personId, name })
+            .post(`https://localhost:5001/api/Values/EditPerson`, { personId: person.personId, name: person.name })
             .then(res => {
                 getPersons();
             })
@@ -51,16 +54,13 @@ const Person = () => {
 
     const validate = () => {
 
-        if (!!name) {
+        if (!!person.name) {
             setError(null);
         } else {
             setError({ name: "Name is required." });
         }
 
-        return !!name
-            ? true
-            : false;
-
+        return !!person.name ? true : false;
     }
 
     const addPerson = () => {
@@ -71,7 +71,7 @@ const Person = () => {
 
         if (!isEditing) {
             axios
-                .post(`https://localhost:5001/api/Values/SavePerson`, { name })
+                .post(`https://localhost:5001/api/Values/SavePerson`, {name: person.name })
                 .then(res => {
                     getPersons();
                 })
@@ -117,9 +117,11 @@ const Person = () => {
                         <Input
                             placeholder="name"
                             id="component-error"
-                            value={name}
+                            value={person && person.name}
                             onChange={(d) => {
-                                setName(d.currentTarget.value)
+                                //cache the value before accessing SyntheticEvent async
+                                const { value } = d.target;
+                                setPerson(person => ({...person, name: value}))
                             }}
                             aria-describedby="component-error-text" />
                         {error
