@@ -11,7 +11,7 @@ export default function MainBottom() {
                 fontSize: 12
             }}>
                 .List component 
-                .break into small component 
+                .auth UI/Server
                 .async action 
                 .ui axios service
                 .complicated local state object
@@ -20,6 +20,7 @@ export default function MainBottom() {
                 .router 
                 .Hook 
                 .jtest
+                .error handling, prevent application crash
             </p>
             <p style={{
                 fontSize: 10
