@@ -16,7 +16,7 @@ export const GridTest = (props: IListItem) => {
 
     const defaultProps = {
         options: top100Films,
-        getOptionLabel: option => option.title,
+        getOptionLabel: option => option.title
     };
 
 
@@ -26,5 +26,5 @@ export const GridTest = (props: IListItem) => {
             debug
             renderInput={params => <TextField {...params} label="debug" margin="normal" fullWidth />}
         />
-    )
-}
+    );
+};

@@ -1,4 +1,4 @@
-export interface IListItem{
+export interface IListItem {
     id?: number;
     name?: string;
 }

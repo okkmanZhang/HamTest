@@ -80,8 +80,7 @@
 		],
 		"eofline": false,
 		"indent": [
-			true,
-			"tabs"
+			false
 		],
 		"max-line-length": [
 			true,
@@ -110,7 +109,7 @@
 		],
 		"jsdoc-format": true,
 		"no-consecutive-blank-lines": [
-			true
+			false
 		],
 		"no-parameter-properties": false,
 		"one-line": [
@@ -121,10 +120,7 @@
 			"check-finally",
 			"check-whitespace"
 		],
-		"quotemark": [
-			true,
-			"single",
-			"avoid-escape"
+		"quotemark": [false
 		],
 		"semicolon": [
 			true,
@@ -145,4 +141,5 @@
 			"check-type"
 		]
 	}
+
 }
