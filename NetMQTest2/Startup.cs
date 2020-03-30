@@ -41,11 +41,13 @@ namespace NetMQTest
             services.AddControllers();
             services.AddSignalR();
 
-            var _pubSocket = new PublisherSocket();
-            _pubSocket.Options.SendHighWatermark = 1000;
-            _pubSocket.Bind("tcp://localhost:6881");
+            var subSocket = new SubscriberSocket();
+            
+            subSocket.Options.ReceiveHighWatermark = 1000;
+            subSocket.Connect("tcp://localhost:6881");
+            subSocket.Subscribe("");
 
-            services.AddSingleton<PublisherSocket>(_pubSocket);
+            services.AddSingleton<SubscriberSocket>(subSocket);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -61,6 +63,7 @@ namespace NetMQTest
             app.UseCors("AllowOrigin");
 
             app.UseAuthorization();
+
             app.UseMiddleware<NetMQMiddleware>();
 
             // app.UseEndpoints(endpoints =>

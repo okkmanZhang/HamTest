@@ -10,7 +10,7 @@ const TestBlock1 = (props) => {
 
         if (conn.current) return;
         conn.current = new signalR.HubConnectionBuilder()
-            .withUrl("https://localhost:5001/chatHub")
+            .withUrl("https://localhost:5002/chatHub")
             .build() as any;
 
         (conn.current as any).on("ReceiveMessage", () => setMessage( prevMessage => prevMessage + ", ReceiveMessage"));
