@@ -1,17 +1,10 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using NetMQ;
-using NetMQ.Sockets;
 using NetMQTest.Hubs;
 
 namespace NetMQTest
@@ -53,8 +46,14 @@ namespace NetMQTest
             // subSocket.Subscribe("");
             // services.AddSingleton<SubscriberSocket>(subSocket);
 
-            var actor = Bus.Create(9999);            
-            services.AddSingleton<NetMQActor>(actor);
+            // var actor = Bus.Create(9999);            
+            // services.AddSingleton<NetMQActor>(actor);
+
+           var conn = new HubConnectionBuilder()
+                .WithUrl("http://localhost:5002/ChatHub")           
+                .Build();
+
+            services.AddSingleton<HubConnection>(conn);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -36,26 +36,14 @@ namespace NetMQTest
                     .AllowAnyHeader()
                     .AllowAnyOrigin()                    
                     .AllowCredentials()
-                    .WithOrigins(new string[]{"http://localhost:8080", "http://localhost:8081"});
+                    .DisallowCredentials()
+                    .WithOrigins(new string[]{"http://localhost:8080", "http://localhost:8081", "http://*:5001"});
             });
             });
             services.AddControllers();
             services.AddSignalR();
 
-            // var _pubSocket = new PublisherSocket();            
-            // _pubSocket.Bind("tcp://localhost:7881");
-            // _pubSocket.Options.SendHighWatermark = 1000;
-            // services.AddSingleton<PublisherSocket>(_pubSocket);
 
-
-            // var subSocket = new SubscriberSocket();            
-            // subSocket.Connect("tcp://localhost:6881");
-            // subSocket.Options.ReceiveHighWatermark = 1000;
-            // subSocket.Subscribe("");
-            // services.AddSingleton<SubscriberSocket>(subSocket);
-
-            var actor = Bus.Create(9999);
-            services.AddSingleton<NetMQActor>(actor);
 
         }
 
@@ -66,7 +54,7 @@ namespace NetMQTest
             {
                 app.UseDeveloperExceptionPage();
             }
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
             app.UseCors("AllowOrigin");
