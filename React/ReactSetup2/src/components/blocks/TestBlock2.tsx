@@ -6,16 +6,16 @@ import { async } from 'rxjs/internal/scheduler/async';
 const TestBlock2 = () => {
 
     const [testState, setTestState] = useState("");
-    const testContext = useContext(TestContext);
-    async function fetchData() {
-        const res = await fetch("https://localhost:5002/WeatherForecast");
+    // const testContext = useContext(TestContext);
+    // async function fetchData() {
+    //     const res = await fetch("https://localhost:5002/WeatherForecast");
 
-        res.text().then(res => setTestState(res));
-    }
+    //     res.text().then(res => setTestState(res));
+    // }
 
-    useEffect(() => {
-        fetchData();
-    });
+    // useEffect(() => {
+    //     fetchData();
+    // });
 
 
 return (<div>Test block2 ..{testState}</div>);

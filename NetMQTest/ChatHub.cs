@@ -9,26 +9,21 @@ using NetMQ.Sockets;
 namespace NetMQTest.Hubs {
     public class ChatHub : Hub {
 
-        private HubConnection _conn;
-        public ChatHub (HubConnection conn) {
-            _conn = conn;
+        private MyClient _myClient;
 
+        public ChatHub (MyClient myClient) {
+            _myClient = myClient;
         }
 
         public async Task SendMessage () {
-            if (_conn.State != HubConnectionState.Connected) {
 
-                try {
-                    await _conn.StartAsync ();
-                    Console.WriteLine ("connected..");
-                } catch (Exception ex) {
-                    Console.WriteLine (ex.Message);
-                }
-            }
+            //1 client1 locked patient1.
+            await _myClient.Start();
+            //2 patient1 is locked.
+            await _myClient.Send("test");                
+            _myClient.clientClients = Clients;
 
-            await _conn.SendAsync ("SendMessage");
-
-            await Clients.All.SendAsync ("ReceiveMessage");
+            //await Clients.All.SendAsync ("ReceiveMessage");
         }
 
     }

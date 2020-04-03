@@ -7,74 +7,53 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NetMQTest.Hubs;
 
-namespace NetMQTest
-{
-    public class Startup
-    {
-        public Startup(IConfiguration configuration)
-        {
+namespace NetMQTest {
+    public class Startup {
+        public Startup (IConfiguration configuration) {
             Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddCors(options => {
-                options.AddPolicy("AllowOrigin", builder =>
-            {
-                builder
-                    .AllowAnyMethod()
-                    .AllowAnyHeader()
-                    .AllowAnyOrigin()                    
-                    .AllowCredentials()
-                    .WithOrigins(new string[]{"http://localhost:8080", "http://localhost:8081"});
+        public void ConfigureServices (IServiceCollection services) {
+            services.AddCors (options => {
+                options.AddPolicy ("AllowOrigin", builder => {
+                    builder
+                        .AllowAnyMethod ()
+                        .AllowAnyHeader ()
+                        .AllowAnyOrigin ()
+                        .AllowCredentials ()
+                        .WithOrigins (new string[] { "http://localhost:8080", "http://localhost:8081" });
+                });
             });
-            });
-            services.AddControllers();
-            services.AddSignalR();
+            services.AddControllers ();
+            services.AddSignalR ();
 
-            // var _pubSocket = new PublisherSocket();            
-            // _pubSocket.Bind("tcp://localhost:6881");
-            // _pubSocket.Options.SendHighWatermark = 1000;
-            // services.AddSingleton<PublisherSocket>(_pubSocket);
 
-            // var subSocket = new SubscriberSocket();
-            // subSocket.Connect("tcp://localhost:7881");
-            // subSocket.Options.ReceiveHighWatermark = 1000;
-            // subSocket.Subscribe("");
-            // services.AddSingleton<SubscriberSocket>(subSocket);
+            //injecting a singleton SingalR client.
+            var clientConn = new HubConnectionBuilder ()
+                .WithUrl ("http://localhost:5010/ChatHub")
+                .Build ();            
 
-            // var actor = Bus.Create(9999);            
-            // services.AddSingleton<NetMQActor>(actor);
-
-           var conn = new HubConnectionBuilder()
-                .WithUrl("http://localhost:5002/ChatHub")           
-                .Build();
-
-            services.AddSingleton<HubConnection>(conn);
+            services.AddSingleton<HubConnection> (clientConn);
+            services.AddSingleton<MyClient> (new MyClient(clientConn));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
+        public void Configure (IApplicationBuilder app, IWebHostEnvironment env) {
+            if (env.IsDevelopment ()) {
+                app.UseDeveloperExceptionPage ();
             }
-            app.UseHttpsRedirection();
+            app.UseHttpsRedirection ();
+            app.UseRouting ();
+            app.UseCors ("AllowOrigin");
+            app.UseAuthorization ();
 
-            app.UseRouting();
-            app.UseCors("AllowOrigin");
-
-            app.UseAuthorization();
-            //app.UseMiddleware<NetMQMiddleware>();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-                endpoints.MapHub<ChatHub>("/chatHub");
+            //mapping the request to a SignalR server Hub.
+            app.UseEndpoints (endpoints => {
+                endpoints.MapControllers ();
+                endpoints.MapHub<ChatHub> ("/chatHub");
             });
         }
     }

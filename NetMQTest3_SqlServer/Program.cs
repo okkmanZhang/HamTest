@@ -20,7 +20,7 @@ namespace NetMQTest
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseUrls("https://*:5002");
+                    webBuilder.UseUrls("http://*:5010");
                     webBuilder.UseStartup<Startup>();
                 });
     }
