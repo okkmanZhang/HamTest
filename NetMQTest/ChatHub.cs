@@ -10,9 +10,11 @@ namespace NetMQTest.Hubs {
     public class ChatHub : Hub {
 
         private MyClient _myClient;
+        private MyRabbitPublishClient _myRabbitPublishClient;
 
-        public ChatHub (MyClient myClient) {
+        public ChatHub (MyClient myClient, MyRabbitPublishClient myRabbitPublishClient) {
             _myClient = myClient;
+            _myRabbitPublishClient = myRabbitPublishClient;
         }
 
         public async Task SendMessage () {
@@ -22,8 +24,10 @@ namespace NetMQTest.Hubs {
             //2 patient1 is locked.
             await _myClient.Send("test");                
             _myClient.clientClients = Clients;
+        }
 
-            //await Clients.All.SendAsync ("ReceiveMessage");
+        public void SendRabbitMessage() {
+            _myRabbitPublishClient.Send("Rabbit Message.");
         }
 
     }

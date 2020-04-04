@@ -23,7 +23,6 @@ namespace NetMQTest.Hubs {
             await _myClient.Send("test");                
             _myClient.clientClients = Clients;
 
-            //await Clients.All.SendAsync ("ReceiveMessage");
         }
 
     }

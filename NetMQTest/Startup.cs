@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NetMQTest.Hubs;
+using RabbitMQ.Client;
 
 namespace NetMQTest {
     public class Startup {
@@ -38,6 +39,18 @@ namespace NetMQTest {
 
             services.AddSingleton<HubConnection> (clientConn);
             services.AddSingleton<MyClient> (new MyClient(clientConn));
+
+            //RabbitMQ client
+            var factory = new ConnectionFactory() { HostName = "localhost" };
+            var connection = factory.CreateConnection();
+
+            services.AddSingleton<IConnection> (connection);
+            services.AddSingleton<MyRabbitPublishClient> (new MyRabbitPublishClient(connection));
+
+
+            var factoryReceive = new ConnectionFactory() { HostName = "localhost" };
+            var connectionReceive = factoryReceive.CreateConnection();
+            services.AddSingleton<MyRabbitReceiveClient> (new MyRabbitReceiveClient(connection));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
