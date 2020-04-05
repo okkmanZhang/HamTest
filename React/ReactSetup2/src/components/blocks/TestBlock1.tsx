@@ -23,6 +23,10 @@ const TestBlock1 = (props) => {
         (conn.current as any).send("SendMessage");
     }
 
+    function sendR() {
+        (conn.current as any).send("SendRabbitMessage");
+    }
+
     useEffect(() => {
         connS();
     });
@@ -36,6 +40,10 @@ const TestBlock1 = (props) => {
             <Button variant="contained" color="primary" onClick={sendM}>
                 send message to server
         </Button>
+
+        <Button variant="contained" color="primary" onClick={sendR}>
+                send RabbitMQ message
+            </Button>
         </div>
     </div>);
 };

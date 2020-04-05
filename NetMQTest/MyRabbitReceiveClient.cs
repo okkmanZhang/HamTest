@@ -11,22 +11,22 @@ public class MyRabbitReceiveClient
     {
         _conn = conn;
         _channel = conn.CreateModel();
+        _channel.ExchangeDeclare(exchange: "logs", type: ExchangeType.Fanout);
 
-         _channel.QueueDeclare(queue: "hello",
-                                 durable: false,
-                                 exclusive: false,
-                                 autoDelete: false,
-                                 arguments: null);
+        var queueName = _channel.QueueDeclare().QueueName;
+        _channel.QueueBind(queue: queueName,
+                            exchange: "logs",
+                            routingKey: "");
 
          var consumer = new EventingBasicConsumer(_channel);
             consumer.Received += (model, ea) =>
             {
                 var body = ea.Body;
                 var message = Encoding.UTF8.GetString(body);
-                Console.WriteLine(" [x] Received {0} from asp.net core", message);
+                Console.WriteLine(" [x] Received {0} from asp.net core ", message);
             };
 
-            _channel.BasicConsume(queue: "hello",
+            _channel.BasicConsume(queue: queueName,
                                  autoAck: true,
                                  consumer: consumer);                                 
     }
