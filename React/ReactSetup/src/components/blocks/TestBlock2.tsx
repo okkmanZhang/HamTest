@@ -18,7 +18,7 @@ const TestBlock2 = () => {
     // });
 
 
-return (<div>Test block2 ..{testState}</div>);
+return (<div> Test block2 ..{testState}</div>);
 };
 
 export default TestBlock2;

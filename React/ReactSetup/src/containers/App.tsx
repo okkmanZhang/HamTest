@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { AppBar, Toolbar, IconButton, Typography, Button } from '@material-ui/core';
+import { AppBar, Toolbar, IconButton, Typography, Button, Paper } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import TestBlock1 from './../components/blocks/TestBlock1';
@@ -39,11 +39,15 @@ const App = () => {
       <Button color="inherit">Login</Button>
     </Toolbar>
   </AppBar>
-    <div>
+    <div style={{width: 500}}>
       <TestContext.Provider value="test dark">
-      <TestBlock1>
-      </TestBlock1>
-      <TestBlock2 />
+        <Paper elevation={3} className="container">
+          <TestBlock1>
+          </TestBlock1>
+        </Paper>
+        <Paper elevation={3} className="container">
+          <TestBlock2 />
+        </Paper>
       </TestContext.Provider>
     </div>
   </Fragment>
