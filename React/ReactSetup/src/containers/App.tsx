@@ -42,8 +42,8 @@ const App = () => {
     <div>
       <TestContext.Provider value="test dark">
       <TestBlock1>
-        <TestBlock2 />
       </TestBlock1>
+      <TestBlock2 />
       </TestContext.Provider>
     </div>
   </Fragment>
