@@ -7,14 +7,29 @@ using NetMQ;
 using NetMQ.Sockets;
 
 namespace NetMQTest.Hubs {
-    public class ChatHub : Hub {
+
+    public interface IQOOLMessageClient
+    {
+        Task ReceivedNewAdminMessage(string msg);
+    }
+
+    public class AllClients
+    {
+        public IHubCallerClients<IQOOLMessageClient> clients {get; set;}
+    }
+    public class ChatHub : Hub<IQOOLMessageClient> {
 
         private MyClient _myClient;
         private MyRabbitPublishClient _myRabbitPublishClient;
+        private MyRabbitReceiveClient _myRabbitReceiveClient;
+        private AllClients _allClients;
 
-        public ChatHub (MyClient myClient, MyRabbitPublishClient myRabbitPublishClient) {
+        public ChatHub (MyClient myClient, MyRabbitPublishClient myRabbitPublishClient, 
+            MyRabbitReceiveClient myRabbitReceiveClient, AllClients allClients) {
             _myClient = myClient;
             _myRabbitPublishClient = myRabbitPublishClient;
+            _myRabbitReceiveClient = myRabbitReceiveClient;
+            _allClients = allClients;
         }
 
         public async Task SendMessage () {
@@ -26,8 +41,17 @@ namespace NetMQTest.Hubs {
             _myClient.clientClients = Clients;
         }
 
-        public void SendRabbitMessage() {
+        public async Task SendRabbitMessage() {
             _myRabbitPublishClient.Send("Rabbit Message.");
+            _allClients.clients = this.Clients;
+
+            // Console.WriteLine("start rabbit event.");
+            // _myRabbitReceiveClient.SendRabbitMessageEvent += async (s, e) => {
+            //     Console.WriteLine("send ReceivedNewAdminMessage from rabbit -> signalr -> me");
+            //     await Clients.All.ReceivedNewAdminMessage(e.Message);
+            // };
+
+            return;
         }
 
     }

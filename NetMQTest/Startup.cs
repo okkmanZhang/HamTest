@@ -41,6 +41,8 @@ namespace NetMQTest {
             services.AddSingleton<MyClient> (new MyClient(clientConn));
 
             //RabbitMQ client
+            services.AddSingleton<AllClients>(new AllClients());
+
             var factory = new ConnectionFactory() { HostName = "localhost" };
             var connection = factory.CreateConnection();
 
@@ -50,7 +52,8 @@ namespace NetMQTest {
 
             var factoryReceive = new ConnectionFactory() { HostName = "localhost" };
             var connectionReceive = factoryReceive.CreateConnection();
-            services.AddSingleton<MyRabbitReceiveClient> (new MyRabbitReceiveClient(connection));
+            services.AddSingleton<MyRabbitReceiveClient> ( s =>  new MyRabbitReceiveClient(connection, s.GetService<AllClients>()));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

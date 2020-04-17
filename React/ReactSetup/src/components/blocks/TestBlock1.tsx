@@ -16,6 +16,10 @@ const TestBlock1 = (props) => {
 
         (conn.current as any).on("ReceiveMessage", () => setMessage(prevMessage => prevMessage + ", ReceiveMessage"));
 
+        (conn.current as any).on("ReceivedNewAdminMessage", (msg) => {
+            console.log("get msg -> signalr -> RabbitMQ -> signalr -> me: " + msg);
+        });
+
         (conn.current as any).start();
     }
 

@@ -2,11 +2,12 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.SignalR.Client;
+using NetMQTest.Hubs;
 
 public class MyClient {
 
     private HubConnection _clientConn;
-    public IHubCallerClients clientClients;
+    public IHubCallerClients<IQOOLMessageClient> clientClients;
 
     public MyClient (HubConnection clientConn) {
         _clientConn = clientConn;
@@ -15,7 +16,7 @@ public class MyClient {
             //5 patient1 is locked.
             Console.WriteLine ("message from SQL Server: " + message);
             //6 patient1 is locked.
-            clientClients.All.SendAsync ("ReceiveMessage");
+            clientClients.All.ReceivedNewAdminMessage("ReceiveMessage");
 
         });        
     }
